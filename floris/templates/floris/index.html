@@ -1,0 +1,21 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <body>
+        <div id="app"></div>
+        <h1>
+            Witaj {{ username }}
+            
+        </h1>
+        <form action="index.html">
+            {% csrf_token %}
+            <button type="submit"> Klik </button>
+        </form>
+
+        <script type="text/javascript" src="{% static 'src/vue/dist/js/chunk-vendors.js' %}"></script>
+        <script type="text/javascript" src="{% static 'src/vue/dist/js/app.js' %}"></script>
+    </body>
+</html>
