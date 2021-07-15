@@ -7,6 +7,9 @@ from django.db import connection
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.views import generic
+from rest_framework.response import Response
+from rest_framework import generics
+from .serializers import FlowerSerializer
 # Create your views here.
 
 def index2(request):
@@ -31,15 +34,15 @@ def index2(request):
             login(request, user)
 
             if request.user.is_authenticated:
-                return HttpResponseRedirect('/floris/')
+                return HttpResponseRedirect('')
             else:
                 return HttpResponse('Please, log in.')
                 
         else:
-            return HttpResponseRedirect('/floris/login/')
+            return HttpResponseRedirect('/login/')
     else:
         form = LoginForm()
-    context = {'form': form, 'username': username} #request.user
+    context = {'form': form, 'username': username}
     return render(request, 'floris/index.html', context)
 
 
@@ -48,7 +51,7 @@ def loginView(request):
         form = LoginForm(request.POST or None)
         if form.is_valid():
 
-            return HttpResponseRedirect('/floris/')
+            return HttpResponseRedirect('')
 
     else:
             
@@ -72,7 +75,7 @@ def register(request):
             rep_password = form.cleaned_data.get("repeated_password")
             if password == rep_password:
                 user = User.objects.create_user(login, email, password)       
-                return HttpResponseRedirect('/floris/login/')
+                return HttpResponseRedirect('/login/')
     else:
         form = RegisterForm()
 
@@ -130,8 +133,10 @@ def logout_view(request):
 
     return HttpResponse('Wylogowano!')
 
-class workspaceView(generic.DetailView):
+class workspaceView(generics.RetrieveAPIView):
     template_name = 'floris/workspace.html'
+    queryset = Flower.objects.all()
+
 
     def get_object(self):
 
@@ -141,17 +146,16 @@ class workspaceView(generic.DetailView):
         object = row
         return object
     
-
-
     def get(self, request, **kwargs):
         if request.user.is_authenticated:
-            resp = super().get(request, **kwargs)
-            return resp
+            queryset = self.get_queryset()
+            #resp = super().get(request, **kwargs)
+            serializer = FlowerSerializer(queryset, many=True)
+            return Response(serializer.data)
         else:
             return HttpResponse('niezalogowany')
     
     def get_context_data(self, **kwargs):
-       
         context =  super(workspaceView, self).get_context_data(**kwargs)
         return context
         

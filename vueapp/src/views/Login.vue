@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <form method="POST" action="./greeting-page">
+    <form>
       <h1>{{ errorMessage }}</h1>
       <input v-model="userEmail" type="email" placeholder="type your email" name="login_email" id="email">
       <input v-model="userPassword" type="password" placeholder="and now password" name="login_password" id="password">

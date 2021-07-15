@@ -1,6 +1,6 @@
 <template>
   <div id="App">
-      <nav class="nav">
+      <nav class="nav" v-if="!['workspace'].includes($route.name)">
         <div @click="flexControl('Home'); isHomeActive = true" :class="ReverseHome"  class="Home Router marginBot">
             <router-link to="/">Home</router-link>
             <div :class="{ active: isHomeActive }" class="line"></div>
@@ -167,6 +167,7 @@ export default {
   } 
 
   .nav {
+    display: initial;
     position: absolute;
     bottom: 72px;
     display: flex;

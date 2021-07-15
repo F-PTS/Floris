@@ -1,5 +1,3 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,8 +12,5 @@
             {% csrf_token %}
             <button type="submit"> Klik </button>
         </form>
-
-        <script type="text/javascript" src="{% static 'src/vue/dist/js/chunk-vendors.js' %}"></script>
-        <script type="text/javascript" src="{% static 'src/vue/dist/js/app.js' %}"></script>
     </body>
 </html>

@@ -8,7 +8,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('addflower/', views.AddPlantView, name='addflower'),
     path('index.html', views.logout_view, name='logout'),
-    path('workspace/', views.workspaceView.as_view(), name='workspace'),
+    path('flowers/', views.workspaceView.as_view(), name='flowers'),
     path('profile/<str:username>/', views.ProfileView.as_view(), name='profile'),
     
 ]

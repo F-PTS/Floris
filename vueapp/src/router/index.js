@@ -6,6 +6,7 @@ import Login from '../views/Login.vue'
 import register from '../views/register.vue'
 import codeVer from '../views/codeVerification.vue'
 import greetingPage from '../views/greetingPage.vue'
+import workspace from '../views/workspace.vue'
 
 
 const routes = [
@@ -43,6 +44,11 @@ const routes = [
     path: '/greeting-page',
     name: 'greetingPage',
     component: greetingPage
+  },
+  {
+    path: '/workspace',
+    name: 'workspace',
+    component: workspace
   }
 ]
 
