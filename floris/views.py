@@ -1,7 +1,8 @@
+from django.db.models import query
 from .models import Flower
 from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, request
 from .forms import LoginForm, PlantForm, RegisterForm
 from django.db import connection
 from django.contrib.auth.models import User
@@ -135,25 +136,29 @@ def logout_view(request):
 
 class workspaceView(generics.RetrieveAPIView):
     template_name = 'floris/workspace.html'
-    queryset = Flower.objects.all()
 
+    def get(self, request, format=None):
+        content = {
+            'user': str(request.user),  # `django.contrib.auth.User` instance.
+            'auth': str(request.auth),  # None
+        }
+        return Response(content)
+    
 
-    def get_object(self):
-
-        with connection.cursor() as cursor:
-            cursor.execute(f'SELECT id,name,water_time FROM floris_Flower WHERE owner_id = {self.request.user.id}')
-            row = cursor.fetchall()
-        object = row
-        return object
+    def get_queryset(self):
+        print("XDDDDDDDDDDD")
+        print(self.request.user.id)
+        return Flower.objects.filter(owner_id=self.request.user.id)
+        
     
     def get(self, request, **kwargs):
-        if request.user.is_authenticated:
+        #if request.user.is_authenticated:
             queryset = self.get_queryset()
             #resp = super().get(request, **kwargs)
             serializer = FlowerSerializer(queryset, many=True)
             return Response(serializer.data)
-        else:
-            return HttpResponse('niezalogowany')
+        #else:
+            #return HttpResponse('niezalogowany')
     
     def get_context_data(self, **kwargs):
         context =  super(workspaceView, self).get_context_data(**kwargs)

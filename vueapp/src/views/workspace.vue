@@ -1,7 +1,9 @@
 <template>
   <div class="workspace">
         <header>
-            <h3>Hello, {{ username }}</h3>
+            <div v-for="name in APIData" :key="name.owner_id" class="username">
+                <h3>Hello, {{ name.owner_id }}</h3>
+            </div>
             <div class="date">
                 <h3>Today is {{ weekday() }}</h3>
             </div>
@@ -12,7 +14,7 @@
                     <div class="plantBox">
                         <div class="plantText">
                             <h1>{{ plant.id }}</h1>
-                            <h2>{{ plant.name }} before watering</h2>
+                            <h2>{{ plant.name }}</h2>
                         </div>
                     </div>
                 </li>
@@ -38,6 +40,14 @@ export default {
         return {
             APIData: []
         }
+    },
+    created() {
+        getAPI.get('', ).then(response => {
+            console.log('API working correcly.')
+            this.APIData = response.data
+        }).catch(err => {
+            console.log(err)
+        })
     },
     methods: {
         addPlant(id, name, water) {
